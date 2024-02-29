@@ -1,0 +1,22 @@
+body{
+	margin: 0;
+	background-color: #0f0f0f;
+}
+.sidebar {
+    background-color: #f0f0f0;
+    padding: 20px;
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.content{
+	color: white;
+}
+
+.content {
+    margin-left: 300px; /* учитывая ширину боковой панели */
+    padding: 20px;
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>EASE ARDUINO</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<div class="sidebar">
+        <h2>Содержание</h2>
+        <button onclick="OpenStart()">Настройка проекта</button><br>
+        <button onclick="OpenStartCode()">Базовый код</button><br>
+        <button onclick="AdditionFunction()">Еще функции</button><br>
+    </div>
+    
+    <div class="content">
+    	<div class="Start">
+        	<h1>Как настроить проект?</h1>
+        	<p>Что бы настроить проект для начало нужно создать некоторые файлы:</p> <br>
+        	<pre>
+        		settings.fs
+        		main.fl
+        		main.cpp
+        	</pre>
+        	<pre>
+        		settings.fs - это файл с настройками которая принимает программа там должно быть указано файл 
+        		где должен быть ваш код и куда он будет записыватся
+
+        		Пример кода: 
+
+        		main.fl
+        		main.cpp
+        		--------------------------------
+
+        		main.fl - файл куда вы записываете свой облегченный код для ардуино. 
+        		Файл может называтся как угодно, но самое главное что бы он был указан в settings.fs как файл кода
+
+        		Пример кода(пример мигание светодиода):
+
+        	    установка
+
+				выходной пин
+				7
+
+			конец
+
+			основной код
+				подача
+				7
+				HIGH
+
+				задержка
+				10
+
+				подача
+				7
+				LOW
+
+				задержка
+				10
+			конец
+
+			конец кода
+        	</pre>
+    	</div>
+    	<div class="functions">
+    		<h1>Базовый код</h1>
+            <pre>
+    			Базовый код на мигание светодиода:
+
+
+    			установка
+
+				выходной пин
+				7
+
+			конец
+
+			основной код
+				подача
+				7
+				HIGH
+
+				задержка
+				10
+
+				подача
+				7
+				LOW
+
+				задержка
+				10
+			конец
+
+			конец кода
+			----------------
+
+			теперь разберем этот код
+
+			установка - функция которая которая открывает настройку пинов на вход или выход (void setup в c++ коде).
+
+			выходной пин - функция на для выхода тока по номеру пину. Пин указывается числом на новой строке.
+
+			конец - функция закрывающая часть кода. Пишется после функции к примеру:
+
+			установка
+			    ваш код на установку
+			конец
+
+			основной код - функция в которой записывается ваш основной код (void loop в с++ коде).
+
+			подача - функция подающая ток на определенный пин. Принимает номер пина и значение (HIGH или LOW).
+			значения пишутся на новой строке к примеру:
+
+			подача
+				7
+				HIGH
+
+			где 7 - номер пина
+			HIGH - значение 
+
+			задержка - функция для задержки кода (delay в коде с++) принимает значение с новой строки к примеру:
+
+			задержка
+				10
+
+			где 10 - количество задержки в милисекундах
+
+			конец кода - функция для того что бы код не переделывался бесконечно из облегченного кода в с++ код.
+			она необходима что бы компиляция закончилась.	
+    		</pre>
+    	</div>
+    	<div class="additionFunctions">
+    		<h1>Еще функции</h1>
+    		<pre>
+    			подача силы - функция для подачи принимает пин куда подавать ток и с какой силой (analogWrite в с++ коде) к примеру:
+
+    			подача силы
+    				7
+    				255
+
+    			где 7 - это пин куда посылается ток
+    			а 255 - это сила с какой подается
+
+    			входной пин - настройка пина для входа, как выходной пин только принимает ток, а не отдает (pinMode(pin, INPUT) в с++ коде) к примеру:
+
+    			установка
+    				входной пин
+    					7
+    			конец
+
+    			где 7 - это настраиваемый пин
+
+    		</pre>
+    	</div>
+    </div>
+
+    <script>
+
+    	document.querySelectorAll('.functions').forEach(function(element) {element.style.display = 'none';});
+       	document.querySelectorAll('.additionFunctions').forEach(function(element) {element.style.display = 'none';});
+    	function OpenStart(){
+    		document.querySelectorAll('.Start').forEach(function(element) {element.style.display = 'block';});
+    		document.querySelectorAll('.functions').forEach(function(element) {element.style.display = 'none';});
+    		document.querySelectorAll('.additionFunctions').forEach(function(element) {element.style.display = 'none';});
+    	}
+    	function OpenStartCode(){
+    		document.querySelectorAll('.Start').forEach(function(element) {element.style.display = 'none';});
+    		document.querySelectorAll('.functions').forEach(function(element) {element.style.display = 'block';});
+    		document.querySelectorAll('.additionFunctions').forEach(function(element) {element.style.display = 'none';});
+    	}
+    	function AdditionFunction(){
+    		document.querySelectorAll('.Start').forEach(function(element) {element.style.display = 'none';});
+    		document.querySelectorAll('.functions').forEach(function(element) {element.style.display = 'none';});
+    		document.querySelectorAll('.additionFunctions').forEach(function(element) {element.style.display = 'block';});
+    	}
+
+	</script>
+
+	</body>
+</html>
