@@ -53,9 +53,11 @@ void ReCoding(string codeFile, string InputCode) {
                 
                 if (action == "конец кода") break;
             }
+            CppCode.close();
         }else{
             cout << "ERROR: YOUR CPP CODE NOT OPEN" << endl;
         }
+        code.close();
     } else{
         cout << "ERROR: YOUR EASE CODE NOT OPEN" << endl;
     }
