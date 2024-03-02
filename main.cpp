@@ -95,7 +95,10 @@ void ReCoding(string codeFile, string InputCode) {
                     }
                 }
                 if (act[0] == "если") {
-                    CppCode << "if ( " << act[1] << " ){\n";
+                    if (act[3] == "вкл") range[0] = "true";
+                    else if (act[3] == "выкл") range[0] = "false";
+                    else range[0] = act[3];
+                    CppCode << "if ( " << act[1] << act[2] << range[0]<< " ){\n";
                     tabs += tab;
                 }
                 if (act[0] == "иначе") {
@@ -143,7 +146,7 @@ int main() {
         cin >> action;
         if (action == "documentation") {
 
-            const char* filePath = "start documentation\\documentation.html";
+            const char* filePath = "документация.txt";
 
             int exitCode = system(filePath);
 

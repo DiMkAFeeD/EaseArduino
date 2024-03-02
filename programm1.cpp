@@ -1,10 +1,10 @@
-#define светодиод 7
 void setup(){
-    pinMode( светодиод, OUTPUT);
+    pinMode( 7, OUTPUT);
 }
+
 void loop(){
-    digitalWrite( светодиод, true );
-    delay( 1000 );
-    digitalWrite( светодиод, false );
-    delay( 1000 );
+    digitalWrite( 7, true );
+    delay( 100 );
+    digitalWrite( 7, false );
+    delay( 100 );
 }
