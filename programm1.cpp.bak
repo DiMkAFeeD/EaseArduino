@@ -1,4 +1,0 @@
-#include <iostream>
-#define нет 3
-int да = нет;
-конецкода=нет;
