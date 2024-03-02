@@ -3,55 +3,109 @@
 #include <fstream>
 #include <windows.h>
 #include <cstdlib>
+#include <sstream>
+
+#define sizeACT 10
 
 using namespace std;
 void ReCoding(string codeFile, string InputCode) {
     fstream code(codeFile);
     if (code.is_open()) {
         cout << "Your ease code open!" << endl;
-        fstream CppCode(InputCode);
+        fstream CppCode(InputCode, std::ios::out | std::ios::trunc);
         if (CppCode.is_open()){
             cout << "Your CPP code open!" << endl;
 
-            string action;
-            string pin;
-            string range;
 
-            bool tab = false;
+            string action;
+            string range[10];
+
+            int tabs = 0;
+            int tab = 4;
 
             while (std::getline(code >> std::ws, action)) {
+                std::istringstream iss(action);
+                string act[sizeACT];
+                for (int idx = 0; idx < sizeACT && iss >> act[idx]; idx++);
 
-                if (action == "конец") CppCode << "}" << endl;
-                if (action == "установка") CppCode << "void setup(){ " << endl;
+                if (act[0] == "все") tabs -= tab;
+                for (int t = 0; t < tabs; t++) {
+                    CppCode << " ";
+                }
+                if (act[0] == "все") CppCode << "}\n";
 
-                if (action == "входной пин") {
-                    std::getline(code >> std::ws, pin);
-                    CppCode << "pinMode(" << pin << ", INPUT" << ");" << endl;
+                if (act[0] == "установка") {
+                    CppCode << "void setup(){\n";
+                    tabs += tab;
                 }
-                if (action == "выходной пин") {
-                    std::getline(code >> std::ws, pin);
-                    CppCode << "pinMode(" << pin << ", OUTPUT" << ");" << endl;
+                if (act[0] == "пин" && act[1] == "мод") {
+                    if (act[3] == "вход") range[0] = "INPUT";
+                    if (act[3] == "выход") range[0] = "OUTPUT";
+                    CppCode << "pinMode( " << act[2] << ", " << range[0] << ");\n";
+                }
+                if (act[0] == "переменная") {
+                    if (act[1] == "число") {
+                        range[0] = "int";
+                        range[1] = act[4];
+                    }
+                    if (act[1] == "флаг") {
+                        range[0] = "bool";
+                        if (act[4] == "вкл") range[1] = "true";
+                        if (act[4] == "выкл") range[1] = "false";
+                    }
+                    if (act[3] == "=") {
+                        CppCode << range[0]<< " " << act[2] << " = " << range[1] << ";\n";
+                    }
+                    else {
+                        CppCode << range[0] << " " << act[2] << ";\n";
+                    }
+                }
+                if (act[0] == "задать") {
+                    range[0] = act[2];
+                    if (act[2] == "вход") {
+                        if (act[3] == "силы") {
+                            CppCode << act[1] << " = analogWrite( " << act[4] << " );\n";
+                        }
+                        else {
+                            CppCode << act[1] << " = digitalWrite( " << act[3] << " );\n";
+                        }
+                    }
+                    else {
+                        CppCode << act[1] << " = " << act[2] << ";\n";
+                    }
+                }
+                if (act[0] == "код") {
+                    CppCode << "void loop(){\n";
+                    tabs += tab;
                 }
 
+                if (act[0] == "задержка") {
+                    CppCode << "delay( " << act[1] << " );\n";
+                }
 
-                if (action == "основной код") CppCode << "void loop() {" << endl;
-
-                if (action == "задержка") {
-                    std::getline(code >> std::ws, range); 
-                    CppCode << "delay (" << range << ");" << endl;
+                if (act[0] == "подать") {
+                    if (act[2] == "силу") {
+                        CppCode << "analogWrite( " << act[1] << ", " << act[3] << " );\n";
+                    }
+                    else {
+                        if (act[2] == "вкл") range[0] = "true";
+                        else if (act[2] == "выкл") range[0] = "false";
+                        else range[0] = act[2];
+                        CppCode << "digitalWrite( " << act[1] << ", " << range[0] << " );\n";
+                    }
                 }
-                if (action == "подача") {
-                    std::getline(code >> std::ws, pin);
-                    std::getline(code >> std::ws, range);
-                    CppCode << "digitalWrite( " << pin << ", " << range << ");" << endl;
+                if (act[0] == "если") {
+                    CppCode << "if ( " << act[1] << " ){\n";
+                    tabs += tab;
                 }
-                if (action == "подача силы") {
-                    std::getline(code >> std::ws, pin);
-                    std::getline(code >> std::ws, range);
-                    CppCode << "analoglWrite( " << pin << ", " << range << ");" << endl;
+                if (act[0] == "иначе") {
+                    CppCode << "else{\n";
+                    tabs += tab;
                 }
-                
-                if (action == "конец кода") break;
+                if (act[0] == "заменять") {
+                    CppCode << "#define " << act[1] << " " << act[2] << endl;
+                }
+                if (act[0] == "конец") break;
             }
             CppCode.close();
         }else{

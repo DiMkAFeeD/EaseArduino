@@ -1,10 +1,10 @@
-void setup(){ 
-pinMode(7, OUTPUT);
+#define светодиод 7
+void setup(){
+    pinMode( светодиод, OUTPUT);
 }
-void loop() {
-digitalWrite( 7, HIGH);
-delay (10);
-digitalWrite( 7, LOW);
-delay (10);
+void loop(){
+    digitalWrite( светодиод, true );
+    delay( 1000 );
+    digitalWrite( светодиод, false );
+    delay( 1000 );
 }
-
